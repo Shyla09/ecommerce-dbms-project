@@ -1,0 +1,23 @@
+# Environments
+backend/venv/
+venv/
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Node
+frontend/node_modules/
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Build outputs
+frontend/dist/
+dist/
+build/
+
+# Mac
+.DS_Store
