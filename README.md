@@ -23,33 +23,33 @@ flowchart TD
     classDef database fill:#DCFCE7,stroke:#16A34A,stroke-width:2px,color:#14532D
     classDef client fill:#FEF9C3,stroke:#CA8A04,stroke-width:2px,color:#713F12
 
-    User((🧑‍💻 Client Device\nWeb Browser)):::client
+    User(("🧑‍💻 Client Device<br>Web Browser")):::client
     
     subgraph Frontend Subsystem ["Frontend (React + Vite + Tailwind)"]
-        UI[User Interface\nReact Routing & Context]:::frontend
-        Theme[Theme Toggle\nLight/Dark Mode State]:::frontend
-        APIClient[Axios API Client\nJWT Authentication]:::frontend
+        UI["User Interface<br>React Routing & Context"]:::frontend
+        Theme["Theme Toggle<br>Light/Dark Mode State"]:::frontend
+        APIClient["Axios API Client<br>JWT Authentication"]:::frontend
     end
     
     subgraph Backend Subsystem ["Backend API (Python FastAPI)"]
-        Router[FastAPI Routing\n(Users, Cart, Products, Orders)]:::backend
-        ORM[SQLAlchemy ORM\nData Modeling]:::backend
-        Auth[JWT Security Middleware]:::backend
+        Router["FastAPI Routing<br>(Users, Cart, Products, Orders)"]:::backend
+        ORM["SQLAlchemy ORM<br>Data Modeling"]:::backend
+        Auth["JWT Security Middleware"]:::backend
     end
     
     subgraph Persistence Layer ["Database Engine"]
-        MySQL[(MySQL Server\n3NF Normalized Schema)]:::database
+        MySQL[("MySQL Server<br>3NF Normalized Schema")]:::database
     end
     
-    User <==>|HTTP/HTTPS\nJSON Payloads| UI
+    User <==>|"HTTP/HTTPS<br>JSON Payloads"| UI
     UI --- Theme
     UI --> APIClient
     
-    APIClient == "RESTful HTTP Requests\n(GET, POST, PUT, DELETE)" ==> Router
+    APIClient == "RESTful HTTP Requests<br>(GET, POST, PUT, DELETE)" ==> Router
     Router --- Auth
     Router --> ORM
     
-    ORM == "SQL Queries\n& Transactions" ==> MySQL
+    ORM == "SQL Queries<br>& Transactions" ==> MySQL
 ```
 
 ---
