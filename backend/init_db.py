@@ -1,17 +1,26 @@
+import os
 import pymysql
 from database import Base, engine
 import models
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def init_db():
+    db_user = os.getenv("DB_USER", "root")
+    db_password = os.getenv("DB_PASSWORD", "root")
+    db_host = os.getenv("DB_HOST", "localhost")
+    db_name = os.getenv("DB_NAME", "EcommerceDB")
+
     try:
         # Connect to MySQL server without specifying a database to create the DB first
-        conn = pymysql.connect(host='localhost', user='root', password='alpharose81')
+        conn = pymysql.connect(host=db_host, user=db_user, password=db_password)
         cursor = conn.cursor()
-        cursor.execute("CREATE DATABASE IF NOT EXISTS EcommerceDB;")
+        cursor.execute(f"CREATE DATABASE IF NOT EXISTS {db_name};")
         conn.commit()
         cursor.close()
         conn.close()
-        print("Database EcommerceDB created or already exists.")
+        print(f"Database {db_name} created or already exists.")
         
         # Now create tables
         print("Creating tables...")
