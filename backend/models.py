@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime, Text, Table
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime, Text, Table, CheckConstraint, DDL, event
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from database import Base
@@ -42,6 +42,11 @@ class ProductCategory(Base):
 
 class Product(Base):
     __tablename__ = "Product"
+    __table_args__ = (
+        CheckConstraint('p_stock >= 0', name='check_p_stock_positive'),
+        CheckConstraint('p_price >= 0', name='check_p_price_positive'),
+    )
+
     p_id = Column(Integer, primary_key=True, index=True)
     seller_id = Column(Integer, ForeignKey("Seller.seller_id", ondelete="CASCADE"), nullable=False)
     c_id = Column(Integer, ForeignKey("Product_Category.c_id", ondelete="SET NULL"))
@@ -73,6 +78,10 @@ class CartItem(Base):
 
 class Order(Base):
     __tablename__ = "Order"
+    __table_args__ = (
+        CheckConstraint('order_amount >= 0', name='check_order_amount_positive'),
+    )
+
     order_id = Column(Integer, primary_key=True, index=True)
     u_id = Column(Integer, ForeignKey("User.u_id", ondelete="CASCADE"), nullable=False)
     order_date = Column(DateTime, default=datetime.utcnow)
@@ -109,3 +118,22 @@ class TrackingDetail(Base):
     update_date = Column(DateTime, default=datetime.utcnow)
 
     order = relationship("Order", back_populates="tracking")
+
+# --- Triggers ---
+trigger_ddl = DDL("""
+CREATE TRIGGER update_stock_after_order
+AFTER INSERT ON Order_Items
+FOR EACH ROW
+BEGIN
+    UPDATE Product
+    SET p_stock = p_stock - NEW.quantity
+    WHERE p_id = NEW.p_id;
+END;
+""")
+
+event.listen(
+    OrderItem.__table__,
+    'after_create',
+    trigger_ddl
+)
+

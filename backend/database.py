@@ -3,7 +3,7 @@ from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 # Replace with actual DB URL (`user:password@host/db_name`)
-SQLALCHEMY_DATABASE_URL = "mysql+pymysql://root:@localhost/EcommerceDB"
+SQLALCHEMY_DATABASE_URL = "mysql+pymysql://root:alpharose81@localhost/EcommerceDB"
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

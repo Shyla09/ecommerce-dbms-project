@@ -96,6 +96,34 @@ def seed_db():
                 "desc": "RGB backlit mechanical keyboard with tactile switches for satisfying typing and gaming.",
                 "image": "https://images.unsplash.com/photo-1595225476474-87563907a212?auto=format&fit=crop&w=1000&q=80",
                 "cat": "Electronics"
+            },
+            {
+                "name": "Ergonomic Office Chair", 
+                "price": 249.00, 
+                "desc": "High-back ergonomic mesh office chair with adjustable lumbar support.",
+                "image": "https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1?auto=format&fit=crop&w=1000&q=80",
+                "cat": "Home Decor"
+            },
+            {
+                "name": "Stainless Steel Water Bottle", 
+                "price": 35.00, 
+                "desc": "Vacuum insulated reusable water bottle keeping drinks cold for 24 hours.",
+                "image": "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=1000&q=80",
+                "cat": "Home Decor"
+            },
+            {
+                "name": "Leather Messenger Bag", 
+                "price": 115.50, 
+                "desc": "Genuine leather messenger bag featuring multiple compartments and adjustable strap.",
+                "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=1000&q=80",
+                "cat": "Apparel"
+            },
+            {
+                "name": "Hiking Backpack 40L", 
+                "price": 85.00, 
+                "desc": "Durable and water-resistant 40L hiking backpack with rain cover.",
+                "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=1000&q=80",
+                "cat": "Apparel"
             }
         ]
 

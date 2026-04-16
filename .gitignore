@@ -1,6 +1,7 @@
 # Environments
 backend/venv/
 venv/
+.venv/
 .env
 
 # Python

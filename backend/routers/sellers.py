@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from sqlalchemy import text
 import schemas, models, database
 from routers.auth import get_current_user
 
@@ -24,3 +25,23 @@ def get_my_seller_profile(db: Session = Depends(database.get_db), current_user: 
     if not seller:
         raise HTTPException(status_code=404, detail="Seller profile not found")
     return seller
+
+@router.get("/analytics")
+def get_seller_analytics(db: Session = Depends(database.get_db), current_user: models.User = Depends(get_current_user)):
+    seller = db.query(models.Seller).filter(models.Seller.u_id == current_user.u_id).first()
+    if not seller:
+        raise HTTPException(status_code=403, detail="You are not a registered seller.")
+    
+    # Query the native SQL VIEW directly using text()
+    query = text("SELECT p_name, total_units_sold, total_revenue FROM SellerSalesSummary WHERE seller_id = :sid")
+    results = db.execute(query, {"sid": seller.seller_id}).fetchall()
+    
+    analytics = []
+    for row in results:
+        analytics.append({
+            "p_name": row[0],
+            "total_units_sold": row[1],
+            "total_revenue": row[2]
+        })
+        
+    return {"analytics": analytics}

@@ -61,7 +61,9 @@ CREATE TABLE `Product` (
     `p_image_url` VARCHAR(500),
     `p_stock` INT NOT NULL DEFAULT 0,
     FOREIGN KEY (`seller_id`) REFERENCES `Seller`(`seller_id`) ON DELETE CASCADE,
-    FOREIGN KEY (`c_id`) REFERENCES `Product_Category`(`c_id`) ON DELETE SET NULL
+    FOREIGN KEY (`c_id`) REFERENCES `Product_Category`(`c_id`) ON DELETE SET NULL,
+    CHECK (`p_stock` >= 0),
+    CHECK (`p_price` >= 0)
 );
 
 -- 6. Cart
@@ -87,7 +89,8 @@ CREATE TABLE `Order` (
     `u_id` INT NOT NULL,
     `order_date` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `order_amount` DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (`u_id`) REFERENCES `User`(`u_id`) ON DELETE CASCADE
+    FOREIGN KEY (`u_id`) REFERENCES `User`(`u_id`) ON DELETE CASCADE,
+    CHECK (`order_amount` >= 0)
 );
 
 -- Extra: Order_Items (Needed for "Order contains Products")
@@ -121,3 +124,28 @@ CREATE TABLE `Tracking_Detail` (
     `update_date` DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (`order_id`) REFERENCES `Order`(`order_id`) ON DELETE CASCADE
 );
+
+-- 11. Triggers
+DELIMITER //
+CREATE TRIGGER update_stock_after_order
+AFTER INSERT ON `Order_Items`
+FOR EACH ROW
+BEGIN
+    UPDATE `Product`
+    SET `p_stock` = `p_stock` - NEW.quantity
+    WHERE `p_id` = NEW.p_id;
+END; //
+DELIMITER ;
+
+-- 12. Views
+CREATE OR REPLACE VIEW `SellerSalesSummary` AS
+SELECT 
+    p.seller_id,
+    p.p_name,
+    IFNULL(SUM(oi.quantity), 0) as total_units_sold,
+    IFNULL(SUM(oi.quantity * oi.price_at_purchase), 0) as total_revenue
+FROM `Product` p
+LEFT JOIN `Order_Items` oi ON p.p_id = oi.p_id
+GROUP BY p.p_id, p.p_name;
+
+

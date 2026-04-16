@@ -65,7 +65,7 @@ export default function Cart() {
                 
                 <div className="flex-grow">
                    <h3 className="text-lg font-bold text-white mb-1">{item.product.p_name}</h3>
-                   <div className="text-sm font-medium text-purple-400 mb-2">Unit Price: ${item.product.p_price}</div>
+                   <div className="text-sm font-medium text-purple-400 mb-2">Unit Price: ₹{item.product.p_price}</div>
                    <div className="inline-flex items-center gap-4 bg-white/5 px-3 py-1 rounded-lg border border-white/10">
                      <span className="text-sm text-gray-400">Qty:</span>
                      <span className="font-bold text-white">{item.quantity}</span>
@@ -74,7 +74,7 @@ export default function Cart() {
                 
                 <div className="text-right">
                   <div className="text-2xl font-extrabold text-white mb-4">
-                     ${(item.product.p_price * item.quantity).toFixed(2)}
+                     ₹{(item.product.p_price * item.quantity).toFixed(2)}
                   </div>
                   <button onClick={() => handleRemove(item.p_id)} className="text-sm text-red-400 hover:text-red-300 transition underline underline-offset-4">
                     Remove
@@ -91,7 +91,7 @@ export default function Cart() {
                <div className="space-y-4 border-b border-white/10 pb-6 mb-6">
                  <div className="flex justify-between text-gray-400">
                     <span>Subtotal</span>
-                    <span>${orderTotal.toFixed(2)}</span>
+                    <span>₹{orderTotal.toFixed(2)}</span>
                  </div>
                  <div className="flex justify-between text-gray-400">
                     <span>Shipping</span>
@@ -99,14 +99,14 @@ export default function Cart() {
                  </div>
                  <div className="flex justify-between text-gray-400">
                     <span>Tax Estimate</span>
-                    <span>${(orderTotal * 0.08).toFixed(2)}</span>
+                    <span>₹{(orderTotal * 0.08).toFixed(2)}</span>
                  </div>
                </div>
                
                <div className="flex justify-between items-end mb-8">
                   <span className="text-gray-300 font-medium">Total</span>
                   <span className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
-                    ${(orderTotal * 1.08).toFixed(2)}
+                    ₹{(orderTotal * 1.08).toFixed(2)}
                   </span>
                </div>
                
